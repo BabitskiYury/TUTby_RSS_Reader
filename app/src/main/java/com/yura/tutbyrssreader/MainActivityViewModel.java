@@ -1,7 +1,5 @@
 package com.yura.tutbyrssreader;
 
-import android.os.Handler;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -23,16 +21,11 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void loadUsers() {
-        Handler handler = new Handler();
-
-        Runnable runnable = () -> {
+        Background background = new Background();
+        background.execute(() -> {
             ApiController apiController = new ApiController();
             List<NewsData> data = apiController.loadIndexRss();
-            handler.post(() -> {
-                news.setValue(data);
-            });
-        };
-        Thread thread = new Thread(runnable);
-        thread.start();
+            background.postOnUiThread(() -> news.setValue(data));
+        });
     }
 }
