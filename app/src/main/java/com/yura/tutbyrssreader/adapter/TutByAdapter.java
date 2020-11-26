@@ -45,6 +45,7 @@ public class TutByAdapter extends RecyclerView.Adapter<TutByViewHolder> {
     }
 
     public void setItems(Collection<NewsData> newsData) {
+        items.clear();
         items.addAll(newsData);
         notifyDataSetChanged();
     }

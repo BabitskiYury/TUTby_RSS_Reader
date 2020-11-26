@@ -8,10 +8,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.yura.tutbyrssreader.adapter.TutByAdapter;
 import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.listeners.RecyclerItemClickListener;
+
+import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,15 +22,20 @@ public class MainActivity extends AppCompatActivity {
 
     private TutByAdapter recyclerViewAdapter;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this::loadNews);
+
         initRecyclerView();
 
         model = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        model.getNews().observe(this, news -> recyclerViewAdapter.setItems(news));
+        model.getNews().observe(this, news -> setItems(news));
     }
 
     private void initRecyclerView() {
@@ -41,5 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerViewAdapter = new TutByAdapter(listener);
         recyclerView.setAdapter(recyclerViewAdapter);
+    }
+
+    private void loadNews(){
+        model.loadUsers();
+    }
+
+    private void setItems(Collection news){
+        recyclerViewAdapter.setItems(news);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
