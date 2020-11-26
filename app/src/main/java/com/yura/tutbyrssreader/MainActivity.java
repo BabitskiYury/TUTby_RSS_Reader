@@ -3,6 +3,7 @@ package com.yura.tutbyrssreader;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.yura.tutbyrssreader.adapter.TutByAdapter;
-import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.listeners.RecyclerItemClickListener;
 
 import java.util.Collection;
@@ -35,7 +35,17 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
 
         model = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        model.getNews().observe(this, news -> setItems(news));
+        initViewCommand();
+        model.getNews().observe(this, this::setItems);
+    }
+
+    private void initViewCommand() {
+        model.viewCommands.observe(this, viewCommand -> {
+            if (viewCommand.getClass() == MainActivityViewModel.ViewCommand.ShowText.class) {
+                Toast.makeText(getBaseContext(), ((MainActivityViewModel.ViewCommand.ShowText) viewCommand).message, Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -51,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerViewAdapter);
     }
 
-    private void loadNews(){
+    private void loadNews() {
         model.loadUsers();
     }
 
-    private void setItems(Collection news){
+    private void setItems(Collection news) {
         recyclerViewAdapter.setItems(news);
         swipeRefreshLayout.setRefreshing(false);
     }

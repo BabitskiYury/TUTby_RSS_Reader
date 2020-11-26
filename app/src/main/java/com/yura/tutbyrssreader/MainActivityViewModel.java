@@ -12,6 +12,18 @@ import java.util.List;
 public class MainActivityViewModel extends ViewModel {
     private MutableLiveData<List<NewsData>> news;
 
+    public SingleLiveEvent<ViewCommand> viewCommands = new SingleLiveEvent<>();
+
+    static class ViewCommand {
+        static final class ShowText extends ViewCommand {
+            public String message;
+
+            public ShowText(String message) {
+                this.message = message;
+            }
+        }
+    }
+
     public LiveData<List<NewsData>> getNews() {
         if (news == null) {
             news = new MutableLiveData<>();
@@ -25,7 +37,10 @@ public class MainActivityViewModel extends ViewModel {
         background.execute(() -> {
             ApiController apiController = new ApiController();
             List<NewsData> data = apiController.loadIndexRss();
-            background.postOnUiThread(() -> news.setValue(data));
+            if (data.isEmpty())
+                background.postOnUiThread(() -> viewCommands.setValue(new ViewCommand.ShowText("Connection failed.")));
+            else
+                background.postOnUiThread(() -> news.setValue(data));
         });
     }
 }
