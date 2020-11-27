@@ -1,7 +1,5 @@
 package com.yura.tutbyrssreader.data;
 
-import com.tickaroo.tikxml.annotation.Attribute;
-import com.tickaroo.tikxml.annotation.Path;
 import com.tickaroo.tikxml.annotation.PropertyElement;
 import com.tickaroo.tikxml.annotation.Xml;
 
@@ -11,11 +9,10 @@ public class Item {
     String title;
     @PropertyElement
     String link;
-    @Path("enclosure")
-    @Attribute(name = "url")
-    String imgUrl;
     @PropertyElement
     String pubDate;
+    @PropertyElement
+    String description;
 
     public String getTitle() {
         return title;
@@ -25,11 +22,11 @@ public class Item {
         return link;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
     public String getPubDate() {
         return pubDate;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

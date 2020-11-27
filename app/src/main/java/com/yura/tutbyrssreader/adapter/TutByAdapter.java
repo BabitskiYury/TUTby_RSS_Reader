@@ -1,18 +1,22 @@
 package com.yura.tutbyrssreader.adapter;
 
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
 import com.yura.tutbyrssreader.R;
 import com.yura.tutbyrssreader.data.NewsData;
+import com.yura.tutbyrssreader.listeners.PopupSelectItemListener;
 import com.yura.tutbyrssreader.listeners.RecyclerItemClickListener;
 
 import java.util.ArrayList;
@@ -21,10 +25,13 @@ import java.util.Collection;
 public class TutByAdapter extends RecyclerView.Adapter<TutByViewHolder> {
 
     private final ArrayList<NewsData> items = new ArrayList<>();
-    private RecyclerItemClickListener listener;
+    private final RecyclerItemClickListener recyclerItemClickListener;
+    private final PopupSelectItemListener popupSelectItemListener;
 
-    public TutByAdapter(RecyclerItemClickListener listener) {
-        this.listener = listener;
+    public TutByAdapter(RecyclerItemClickListener recyclerItemClickListener,
+                        PopupSelectItemListener popupSelectItemListener) {
+        this.recyclerItemClickListener = recyclerItemClickListener;
+        this.popupSelectItemListener = popupSelectItemListener;
     }
 
     @NonNull
@@ -36,7 +43,7 @@ public class TutByAdapter extends RecyclerView.Adapter<TutByViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TutByViewHolder holder, int position) {
-        holder.bind(items.get(position), listener);
+        holder.bind(items.get(position), recyclerItemClickListener, popupSelectItemListener);
     }
 
     @Override
@@ -52,23 +59,32 @@ public class TutByAdapter extends RecyclerView.Adapter<TutByViewHolder> {
 }
 
 class TutByViewHolder extends RecyclerView.ViewHolder {
+
     private final ConstraintLayout itemLayout;
-    private final ImageView image;
     private final TextView title;
-    private final TextView date;
+    private final ImageButton actionMenu;
 
     public TutByViewHolder(@NonNull View itemView) {
         super(itemView);
         itemLayout = itemView.findViewById(R.id.item_constraintLayout);
-        image = itemView.findViewById(R.id.itemImage_imageView);
         title = itemView.findViewById(R.id.itemTitle_textView);
-        date = itemView.findViewById(R.id.itemDate_textView);
+        actionMenu = itemView.findViewById(R.id.actionMenu);
     }
 
-    public void bind(NewsData item, RecyclerItemClickListener listener) {
-        Picasso.with(image.getContext()).load(item.getImgUrl()).into(image);
+    public void bind(NewsData item, RecyclerItemClickListener recyclerItemClickListener,
+                     PopupSelectItemListener popupSelectItemListener) {
         title.setText(item.getTitle());
-        date.setText(item.getPubDate());
-        itemLayout.setOnClickListener(v -> listener.onRecyclerItemClick(item));
+        itemLayout.setOnClickListener(v -> recyclerItemClickListener.onRecyclerItemClick(item));
+
+        actionMenu.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(new ContextThemeWrapper(v.getContext(),R.style.popupMenu),v);
+            popupMenu.inflate(R.menu.item_popup_menu);
+
+            popupMenu.setOnMenuItemClickListener(action -> {
+                popupSelectItemListener.onPopupItemSelect((String)action.getTitle(),item);
+                return true;
+            });
+            popupMenu.show();
+        });
     }
 }

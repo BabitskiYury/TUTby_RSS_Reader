@@ -1,5 +1,7 @@
 package com.yura.tutbyrssreader;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -33,6 +35,7 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void loadUsers() {
+        Log.d("423423432432", "loadU");
         Background background = new Background();
         background.execute(() -> {
             ApiController apiController = new ApiController();

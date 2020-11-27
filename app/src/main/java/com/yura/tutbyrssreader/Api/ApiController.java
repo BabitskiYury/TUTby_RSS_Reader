@@ -45,7 +45,7 @@ public class ApiController {
             XmlData rss = response.body();
 
             rss.getItems().forEach(
-                    item -> listItems.add(new NewsData(item.getTitle(), item.getLink(), item.getImgUrl(), item.getPubDate())));
+                    item -> listItems.add(new NewsData(item.getTitle(), item.getLink(), item.getPubDate(), item.getDescription())));
         } catch (IOException e) {
             e.printStackTrace();
         }

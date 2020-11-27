@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.yura.tutbyrssreader.adapter.TutByAdapter;
+import com.yura.tutbyrssreader.data.NewsData;
+import com.yura.tutbyrssreader.dialogs.InfoDialog;
+import com.yura.tutbyrssreader.listeners.PopupSelectItemListener;
 import com.yura.tutbyrssreader.listeners.RecyclerItemClickListener;
 
 import java.util.Collection;
@@ -57,7 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 Uri.parse(item.getLink())
         ));
 
-        recyclerViewAdapter = new TutByAdapter(listener);
+        PopupSelectItemListener popupSelectItemListener = (selectedAction, item) -> {
+            if (selectedAction == getString(R.string.item_popup_info))
+                showInfoPopup(item);
+            else
+                readPopup();
+        };
+
+        recyclerViewAdapter = new TutByAdapter(listener, popupSelectItemListener);
         recyclerView.setAdapter(recyclerViewAdapter);
     }
 
@@ -68,5 +78,14 @@ public class MainActivity extends AppCompatActivity {
     private void setItems(Collection news) {
         recyclerViewAdapter.setItems(news);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void showInfoPopup(NewsData item) {
+        InfoDialog dialog = new InfoDialog().newInstance(item);
+        dialog.show(getFragmentManager(), "popup");
+    }
+
+    private void readPopup() {
+
     }
 }
