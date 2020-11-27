@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.yura.tutbyrssreader.WebView.WebViewActivity;
 import com.yura.tutbyrssreader.adapter.TutByAdapter;
 import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.dialogs.InfoDialog;
@@ -56,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         RecyclerItemClickListener listener = item -> startActivity(new Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(item.getLink())
-        ));
+                this,
+                WebViewActivity.class)
+                .setData(Uri.parse(item.getLink())));
 
         PopupSelectItemListener popupSelectItemListener = (selectedAction, item) -> {
             if (selectedAction == getString(R.string.item_popup_info))
