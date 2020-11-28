@@ -1,4 +1,4 @@
-package com.yura.tutbyrssreader.Api;
+package com.yura.tutbyrssreader.api;
 
 import com.yura.tutbyrssreader.data.XmlData;
 

@@ -1,4 +1,4 @@
-package com.yura.tutbyrssreader.Api;
+package com.yura.tutbyrssreader.api;
 
 import com.tickaroo.tikxml.TikXml;
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory;

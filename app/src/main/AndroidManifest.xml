@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TUTbyRSSReader"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WebView.WebViewActivity"></activity>
+        <activity android:name=".web_view.WebViewActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

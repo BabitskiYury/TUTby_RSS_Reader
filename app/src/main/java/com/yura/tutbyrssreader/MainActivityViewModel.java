@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.yura.tutbyrssreader.Api.ApiController;
+import com.yura.tutbyrssreader.api.ApiController;
 import com.yura.tutbyrssreader.data.NewsData;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.yura.tutbyrssreader.WebView;
+package com.yura.tutbyrssreader.web_view;
 
 import androidx.appcompat.app.AppCompatActivity;
 

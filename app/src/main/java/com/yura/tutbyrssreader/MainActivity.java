@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.yura.tutbyrssreader.WebView.WebViewActivity;
+import com.yura.tutbyrssreader.web_view.WebViewActivity;
 import com.yura.tutbyrssreader.adapter.TutByAdapter;
 import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.dialogs.InfoDialog;
