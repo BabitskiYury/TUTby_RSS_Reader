@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.yura.tutbyrssreader.web_view.WebViewActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yura.tutbyrssreader.adapter.TutByAdapter;
+import com.yura.tutbyrssreader.autodiscovery.AutodiscoveryActivity;
 import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.dialogs.InfoDialog;
 import com.yura.tutbyrssreader.listeners.PopupSelectItemListener;
 import com.yura.tutbyrssreader.listeners.RecyclerItemClickListener;
+import com.yura.tutbyrssreader.web_view.WebViewActivity;
 
 import java.util.Collection;
 
@@ -37,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(this::loadNews);
 
         initRecyclerView();
+        initFab();
 
-        model = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        model = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
         initViewCommand();
         model.getNews().observe(this, this::setItems);
     }
@@ -50,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    private void initFab() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> startActivity(new Intent(
+                this,
+                AutodiscoveryActivity.class)
+        ));
     }
 
     private void initRecyclerView() {
@@ -73,12 +84,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadNews() {
-        model.loadUsers();
+        model.loadData();
     }
 
     private void setItems(Collection news) {
         recyclerViewAdapter.setItems(news);
         swipeRefreshLayout.setRefreshing(false);
+
     }
 
     private void showInfoPopup(NewsData item) {

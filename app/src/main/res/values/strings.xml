@@ -3,4 +3,12 @@
 
     <string name="item_popup_info">Информация</string>
     <string name="item_popup_read">Прочитано</string>
+    <string name="autodiscovery_hint">Введите адрес</string>
+    <string name="search_button_text">Поиск</string>
+    <string name="search_results_text">Результат поиска:</string>
+    <string name="choose_url_text">Выбрать</string>
+    <string name="search_failed_text">Ничего не найдено.</string>
+    <string name="sprefs_link_string">sprefs_link_string</string>
+    <string name="sprefs_base_url_string">sprefs_base_url_string</string>
+    <string name="accept_button_text">Сохранить</string>
 </resources>

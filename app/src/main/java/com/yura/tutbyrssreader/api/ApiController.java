@@ -17,19 +17,17 @@ import retrofit2.Retrofit;
 
 public class ApiController {
 
-    static final String BASE_URL = "https://news.tut.by/";
-
     private final Retrofit retrofit;
     private final TutByAPI tutByApi;
 
-    public ApiController() {
+    public ApiController(String baseUrl) {
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .build();
 
-        retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+        retrofit = new Retrofit.Builder().baseUrl(baseUrl)
                 .client(okHttpClient)
                 .addConverterFactory(TikXmlConverterFactory.create(new TikXml.Builder().exceptionOnUnreadXml(false).build()))
                 .build();
@@ -37,8 +35,10 @@ public class ApiController {
         tutByApi = retrofit.create(TutByAPI.class);
     }
 
-    public List<NewsData> loadIndexRss() {
-        Call<XmlData> call = tutByApi.loadIndexRss();
+    public List<NewsData> loadIndexRss(String link) {
+
+        Call<XmlData> call = tutByApi.loadIndexRss(link);
+
         ArrayList<NewsData> listItems = new ArrayList<>();
         try {
             Response<XmlData> response = call.execute();
