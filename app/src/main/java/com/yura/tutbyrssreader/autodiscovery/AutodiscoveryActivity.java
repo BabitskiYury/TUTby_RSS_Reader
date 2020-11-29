@@ -1,6 +1,8 @@
 package com.yura.tutbyrssreader.autodiscovery;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +36,8 @@ public class AutodiscoveryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_autodiscovery);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00070F")));
 
         searchResultTextView = findViewById(R.id.searchResultTextVIew);
 
