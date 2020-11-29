@@ -16,12 +16,15 @@ public interface NewsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(NewsData word);
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertList(List<NewsData> word);
+
     @Query("DELETE FROM news_table")
     void deleteAll();
 
-    @Query("SELECT * FROM news_table ORDER BY title ASC")
-    List<NewsData> getAlphabetizedNews();
+    @Query("SELECT * FROM news_table")
+    List<NewsData> getNews();
 
-    @Query("SELECT * FROM news_table ORDER BY title ASC")
-    LiveData<List<NewsData>> getAlphabetizedNewsLiveData();
+    @Query("SELECT * FROM news_table ")
+    LiveData<List<NewsData>> getNewsLiveData();
 }

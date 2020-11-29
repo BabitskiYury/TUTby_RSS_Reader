@@ -1,9 +1,12 @@
 package com.yura.tutbyrssreader.data;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.yura.tutbyrssreader.NewsState;
+import com.yura.tutbyrssreader.room.StateConverter;
 
 import java.io.Serializable;
 
@@ -18,15 +21,22 @@ public class NewsData implements Serializable {
     }
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    int id;
+    public int id;
     @ColumnInfo(name = "title")
-    String title;
+    public String title;
     @ColumnInfo(name = "link")
-    String link;
+    public String link;
     @ColumnInfo(name = "pubDate")
-    String pubDate;
+    public String pubDate;
     @ColumnInfo(name = "description")
-    String description;
+    public String description;
+    @ColumnInfo(name = "state")
+    @TypeConverters({StateConverter.class})
+    public NewsState state;
+
+    public int getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;
@@ -42,5 +52,29 @@ public class NewsData implements Serializable {
 
     public String getPubDate() {
         return pubDate;
+    }
+
+    public NewsState getState() {
+        return state;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setState(NewsState state) {
+        this.state = state;
     }
 }

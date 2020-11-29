@@ -1,10 +1,16 @@
 package com.yura.tutbyrssreader.autodiscovery;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.yura.tutbyrssreader.Background;
+import com.yura.tutbyrssreader.MainActivityViewModel;
+import com.yura.tutbyrssreader.NetworkManager;
 import com.yura.tutbyrssreader.SingleLiveEvent;
 import com.yura.tutbyrssreader.api.ApiController;
 import com.yura.tutbyrssreader.data.NewsData;
@@ -18,12 +24,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AutodiscoveryActivityViewModel extends ViewModel {
+public class AutodiscoveryActivityViewModel extends AndroidViewModel {
     private MutableLiveData<List<String>> items;
 
     private final String regex = "href=.*?xml\"|href=.*?rss\"";
 
     public SingleLiveEvent<AutodiscoveryActivityViewModel.ViewCommand> viewCommands = new SingleLiveEvent<>();
+
+    public AutodiscoveryActivityViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     static class ViewCommand {
         static final class NoResults extends AutodiscoveryActivityViewModel.ViewCommand {
@@ -34,6 +44,14 @@ public class AutodiscoveryActivityViewModel extends ViewModel {
 
             public CheckRss(Boolean result) {
                 this.result = result;
+            }
+        }
+
+        static final class ShowText extends AutodiscoveryActivityViewModel.ViewCommand {
+            public String message;
+
+            public ShowText(String message) {
+                this.message = message;
             }
         }
     }
@@ -77,23 +95,27 @@ public class AutodiscoveryActivityViewModel extends ViewModel {
     }
 
     public void checkRssChannel(String url) {
-        Background background = new Background();
-        background.execute(() -> {
-            try {
-                int index = url.indexOf("/", 8) + 1;
-                String baseUrl = url.substring(0, index);
-                String link = url.substring(index);
+        if(NetworkManager.isNetworkAvailable(getApplication())){{
+            Background background = new Background();
+            background.execute(() -> {
+                try {
+                    int index = url.indexOf("/", 8) + 1;
+                    String baseUrl = url.substring(0, index);
+                    String link = url.substring(index);
 
-                ApiController apiController = new ApiController(baseUrl);
-                List<NewsData> data = apiController.loadIndexRss(link);
+                    ApiController apiController = new ApiController(baseUrl);
+                    List<NewsData> data = apiController.loadIndexRss(link);
 
-                if (data.isEmpty() || data == null)
+                    if (data.isEmpty() || data == null)
+                        background.postOnUiThread(() -> viewCommands.setValue(new AutodiscoveryActivityViewModel.ViewCommand.CheckRss(false)));
+                    else
+                        background.postOnUiThread(() -> viewCommands.setValue(new AutodiscoveryActivityViewModel.ViewCommand.CheckRss(true)));
+                } catch (Exception e) {
                     background.postOnUiThread(() -> viewCommands.setValue(new AutodiscoveryActivityViewModel.ViewCommand.CheckRss(false)));
-                else
-                    background.postOnUiThread(() -> viewCommands.setValue(new AutodiscoveryActivityViewModel.ViewCommand.CheckRss(true)));
-            } catch (Exception e) {
-                background.postOnUiThread(() -> viewCommands.setValue(new AutodiscoveryActivityViewModel.ViewCommand.CheckRss(false)));
-            }
-        });
+                }
+            });
+        }}
+        else
+            viewCommands.setValue(new AutodiscoveryActivityViewModel.ViewCommand.ShowText("No internet connection."));
     }
 }

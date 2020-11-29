@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         model = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
         initViewCommand();
-        model.getNews().observe(this, this::setItems);
+        model.news.observe(this, this::setItems);
     }
 
     private void initViewCommand() {
@@ -67,10 +67,16 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        RecyclerItemClickListener listener = item -> startActivity(new Intent(
-                this,
-                WebViewActivity.class)
-                .setData(Uri.parse(item.getLink())));
+        RecyclerItemClickListener listener = item -> {
+            if(NetworkManager.isNetworkAvailable(this)){
+                startActivity(new Intent(
+                        this,
+                        WebViewActivity.class)
+                        .setData(Uri.parse(item.getLink())));
+            }
+            else
+                Toast.makeText(this,"No internet connection.",Toast.LENGTH_SHORT).show();
+        };
 
         PopupSelectItemListener popupSelectItemListener = (selectedAction, item) -> {
             if (selectedAction == getString(R.string.item_popup_info))

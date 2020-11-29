@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yura.tutbyrssreader.MainActivityViewModel;
 import com.yura.tutbyrssreader.R;
 import com.yura.tutbyrssreader.adapter.SearchResultsAdapter;
 import com.yura.tutbyrssreader.listeners.SearchListItemButtonClickListener;
@@ -36,7 +37,7 @@ public class AutodiscoveryActivity extends AppCompatActivity {
 
         searchResultTextView = findViewById(R.id.searchResultTextVIew);
 
-        model = new ViewModelProvider(this).get(AutodiscoveryActivityViewModel.class);
+        model = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(AutodiscoveryActivityViewModel.class);
         model.getLinks().observe(this, this::setItems);
 
         initViewCommand();
@@ -81,6 +82,8 @@ public class AutodiscoveryActivity extends AppCompatActivity {
                     acceptButton.setEnabled(true);
                 }
 
+            }else if (viewCommand.getClass() == AutodiscoveryActivityViewModel.ViewCommand.ShowText.class) {
+                Toast.makeText(getBaseContext(), ((AutodiscoveryActivityViewModel.ViewCommand.ShowText) viewCommand).message, Toast.LENGTH_SHORT).show();
             }
         });
     }
