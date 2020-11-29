@@ -39,7 +39,7 @@ public class ApiController {
 
     public List<NewsData> loadIndexRss(String link) {
 
-        String regex = "[«А-ЯЁ][а-яёА-ЯЁ. ,a-zA-z\\n\\f\\r\\!\\.\\:\\?0-9“”«»()−/]*[.](?![а-яёА-ЯЁa-zA-z])";
+        String regex = "[«А-ЯЁ][а-яёА-ЯЁ. ,a-zA-z\\n\\f\\r\\!\\.\\:\\?0-9“”«»—()−/]*[.](?![а-яёА-ЯЁa-zA-z])";
 
         Call<XmlData> call = tutByApi.loadIndexRss(link);
 
@@ -54,11 +54,11 @@ public class ApiController {
                     item -> {
                         String description = item.getDescription();
                         Matcher matcher = pattern.matcher(description);
-                        while (matcher.find()) {
+
+                        if(matcher.find()){
                             int start = matcher.start();
                             int end = matcher.end();
                             description = description.substring(start, end);
-                            break;
                         }
                         listItems.add(new NewsData(item.getTitle(), item.getLink(), item.getPubDate(), description));
 
