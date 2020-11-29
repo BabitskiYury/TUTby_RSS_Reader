@@ -6,7 +6,9 @@ import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.data.XmlData;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -21,6 +23,8 @@ public class ApiController {
 
     private final Retrofit retrofit;
     private final TutByAPI tutByApi;
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     public ApiController(String baseUrl) {
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -60,7 +64,7 @@ public class ApiController {
                             int end = matcher.end();
                             description = description.substring(start, end);
                         }
-                        listItems.add(new NewsData(item.getTitle(), item.getLink(), item.getPubDate(), description));
+                        listItems.add(new NewsData(item.getTitle(), item.getLink(),dateFormat.format(new Date(item.getPubDate())), description));
 
                     });
         } catch (IOException e) {
