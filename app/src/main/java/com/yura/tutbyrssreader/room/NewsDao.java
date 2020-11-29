@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.yura.tutbyrssreader.data.NewsData;
 
@@ -27,4 +28,7 @@ public interface NewsDao {
 
     @Query("SELECT * FROM news_table ")
     LiveData<List<NewsData>> getNewsLiveData();
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    void update(NewsData newsData);
 }

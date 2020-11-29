@@ -1,19 +1,13 @@
 package com.yura.tutbyrssreader.adapter;
 
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yura.tutbyrssreader.NewsState;
 import com.yura.tutbyrssreader.R;
 import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.listeners.PopupSelectItemListener;
@@ -53,7 +47,10 @@ public class TutByAdapter extends RecyclerView.Adapter<TutByViewHolder> {
 
     public void setItems(Collection<NewsData> newsData) {
         items.clear();
-        items.addAll(newsData);
+        newsData.forEach(item -> {
+            if (item.state != NewsState.DONE)
+                items.add(item);
+        });
         notifyDataSetChanged();
     }
 }

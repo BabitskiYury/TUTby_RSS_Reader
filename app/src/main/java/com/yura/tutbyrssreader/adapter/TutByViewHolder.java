@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yura.tutbyrssreader.NewsState;
 import com.yura.tutbyrssreader.R;
 import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.listeners.PopupSelectItemListener;
@@ -43,5 +44,8 @@ class TutByViewHolder extends RecyclerView.ViewHolder {
             });
             popupMenu.show();
         });
+
+        if(item.state == NewsState.READING)
+            title.setText("reading state");
     }
 }

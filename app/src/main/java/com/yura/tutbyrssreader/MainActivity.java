@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         this,
                         WebViewActivity.class)
                         .setData(Uri.parse(item.getLink())));
+                model.setItemState(item, NewsState.READING);
             }
             else
                 Toast.makeText(this,"No internet connection.",Toast.LENGTH_SHORT).show();
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             if (selectedAction == getString(R.string.item_popup_info))
                 showInfoPopup(item);
             else
-                readPopup();
+                readPopup(item);
         };
 
         recyclerViewAdapter = new TutByAdapter(listener, popupSelectItemListener);
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show(getFragmentManager(), "popup");
     }
 
-    private void readPopup() {
-
+    private void readPopup(NewsData item) {
+        model.setItemState(item, NewsState.DONE);
     }
 }

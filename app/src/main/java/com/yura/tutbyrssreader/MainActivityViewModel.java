@@ -58,4 +58,9 @@ public class MainActivityViewModel extends AndroidViewModel {
             viewCommands.setValue(new ViewCommand.ShowText("No internet connection."));
 
     }
+
+    public void setItemState(NewsData item, NewsState state){
+        item.state = state;
+        repository.update(item);
+    }
 }

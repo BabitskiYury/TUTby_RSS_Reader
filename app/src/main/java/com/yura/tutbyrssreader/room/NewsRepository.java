@@ -33,12 +33,27 @@ public class NewsRepository {
 
             ApiController apiController = new ApiController(baseUrl);
             List<NewsData> data = apiController.loadIndexRss(link);
-            if(!data.isEmpty() && data!=null){
-                newsDao.deleteAll();
-                newsDao.insertList(data);
-            }
-        });
 
+            if (!data.isEmpty()) {
+                List<NewsData> oldItems = allNews.getValue();
+                for (int i = 0; i < oldItems.size(); i++) {
+                    for (int j = 0; j < data.size(); j++) {
+                        if (oldItems.get(i).title.equals(data.get(j).title)) {
+                            data.get(j).state = oldItems.get(i).state;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            newsDao.deleteAll();
+            newsDao.insertList(data);
+        });
     }
+
+    public void update(NewsData item) {
+        NewsRoomDatabase.databaseWriteExecutor.execute(() -> newsDao.update(item));
+    }
+
 
 }
