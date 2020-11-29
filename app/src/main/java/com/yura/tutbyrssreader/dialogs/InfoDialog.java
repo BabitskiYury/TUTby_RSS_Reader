@@ -39,6 +39,8 @@ public class InfoDialog extends DialogFragment {
         dialog.setContentView(inflater.inflate(R.layout.info_dialog, null));
         dialog.show();
 
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+
         TextView title = dialog.findViewById(R.id.popupTitleTextView);
         TextView date = dialog.findViewById(R.id.popupDateTextView);
         TextView description = dialog.findViewById(R.id.popupDescriptionTextView);

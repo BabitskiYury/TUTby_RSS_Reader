@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/search_results_text"
+        android:textColor="@color/item_state_default_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +64,7 @@
     <TextView
         android:id="@+id/searchResultTextVIew"
         android:visibility="gone"
+        android:textColor="@color/item_state_default_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
