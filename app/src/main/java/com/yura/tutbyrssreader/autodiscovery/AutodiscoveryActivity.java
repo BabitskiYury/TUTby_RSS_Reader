@@ -54,7 +54,6 @@ public class AutodiscoveryActivity extends AppCompatActivity {
 
     private void loadData(String link) {
         model.loadData(link);
-        recyclerView.setVisibility(View.VISIBLE);
         searchResultTextView.setVisibility(View.GONE);
     }
 
@@ -66,6 +65,7 @@ public class AutodiscoveryActivity extends AppCompatActivity {
 
     private void setItems(Collection data) {
         recyclerViewAdapter.setItems(data);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     private void initViewCommand() {
@@ -112,6 +112,9 @@ public class AutodiscoveryActivity extends AppCompatActivity {
         ed.commit();
 
         Toast.makeText(this, "Link updated", Toast.LENGTH_SHORT).show();
+
+        setResult(RESULT_OK);
+
         finish();
     }
 }

@@ -3,15 +3,11 @@ package com.yura.tutbyrssreader;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.yura.tutbyrssreader.api.ApiController;
 import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.room.NewsRepository;
 
@@ -41,7 +37,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void loadData() {
-        if(NetworkManager.isNetworkAvailable(application)){
+        if (NetworkManager.isNetworkAvailable(application)) {
             Background background = new Background();
             background.execute(() -> {
                 Application application = getApplication();
@@ -51,15 +47,14 @@ public class MainActivityViewModel extends AndroidViewModel {
                 String baseUrl = sPref.getString(application.getString(R.string.sprefs_base_url_string), "https://news.tut.by/");
                 String link = sPref.getString(application.getString(R.string.sprefs_link_string), "rss/index.rss");
 
-                repository.loadDataFromNetwork(baseUrl,link);
+                repository.loadDataFromNetwork(baseUrl, link);
             });
-        }
-        else
+        } else
             viewCommands.setValue(new ViewCommand.ShowText("No internet connection."));
 
     }
 
-    public void setItemState(NewsData item, NewsState state){
+    public void setItemState(NewsData item, NewsState state) {
         item.state = state;
         repository.update(item);
     }

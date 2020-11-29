@@ -27,7 +27,7 @@ import okhttp3.Response;
 public class AutodiscoveryActivityViewModel extends AndroidViewModel {
     private MutableLiveData<List<String>> items;
 
-    private final String regex = "href=.*?xml\"|href=.*?rss\"";
+    private final String regex = "href=\\S*xml\"|href=\\S*rss\"";
 
     public SingleLiveEvent<AutodiscoveryActivityViewModel.ViewCommand> viewCommands = new SingleLiveEvent<>();
 
@@ -106,7 +106,7 @@ public class AutodiscoveryActivityViewModel extends AndroidViewModel {
                     ApiController apiController = new ApiController(baseUrl);
                     List<NewsData> data = apiController.loadIndexRss(link);
 
-                    if (data.isEmpty() || data == null)
+                    if (data.isEmpty())
                         background.postOnUiThread(() -> viewCommands.setValue(new AutodiscoveryActivityViewModel.ViewCommand.CheckRss(false)));
                     else
                         background.postOnUiThread(() -> viewCommands.setValue(new AutodiscoveryActivityViewModel.ViewCommand.CheckRss(true)));
