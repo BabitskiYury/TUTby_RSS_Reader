@@ -46,6 +46,8 @@ class TutByViewHolder extends RecyclerView.ViewHolder {
         });
 
         if(item.state == NewsState.READING)
-            title.setText("reading state");
+            title.setTextColor(title.getContext().getColor(R.color.item_state_reading_color));
+        else
+            title.setTextColor(title.getContext().getColor(R.color.item_state_default_color));
     }
 }

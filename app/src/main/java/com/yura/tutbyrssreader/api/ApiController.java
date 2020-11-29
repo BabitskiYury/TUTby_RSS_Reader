@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -37,6 +39,8 @@ public class ApiController {
 
     public List<NewsData> loadIndexRss(String link) {
 
+        String regex = "[«А-ЯЁ][а-яёА-ЯЁ. ,a-zA-z\\n\\f\\r\\!\\.\\:\\?0-9“”«»()−/]*[.](?![а-яёА-ЯЁa-zA-z])";
+
         Call<XmlData> call = tutByApi.loadIndexRss(link);
 
         ArrayList<NewsData> listItems = new ArrayList<>();
@@ -44,8 +48,21 @@ public class ApiController {
             Response<XmlData> response = call.execute();
             XmlData rss = response.body();
 
+            Pattern pattern = Pattern.compile(regex);
+
             rss.getItems().forEach(
-                    item -> listItems.add(new NewsData(item.getTitle(), item.getLink(), item.getPubDate(), item.getDescription())));
+                    item -> {
+                        String description = item.getDescription();
+                        Matcher matcher = pattern.matcher(description);
+                        while (matcher.find()) {
+                            int start = matcher.start();
+                            int end = matcher.end();
+                            description = description.substring(start, end);
+                            break;
+                        }
+                        listItems.add(new NewsData(item.getTitle(), item.getLink(), item.getPubDate(), description));
+
+                    });
         } catch (IOException e) {
             e.printStackTrace();
         }
