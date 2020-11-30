@@ -92,6 +92,8 @@ public class AutodiscoveryActivity extends AppCompatActivity {
 
             }else if (viewCommand.getClass() == AutodiscoveryActivityViewModel.ViewCommand.ShowText.class) {
                 Toast.makeText(getBaseContext(), ((AutodiscoveryActivityViewModel.ViewCommand.ShowText) viewCommand).message, Toast.LENGTH_SHORT).show();
+                linkEditText.setEnabled(true);
+                acceptButton.setEnabled(true);
             }
         });
     }
