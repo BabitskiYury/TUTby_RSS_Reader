@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -24,6 +25,7 @@ import com.yura.tutbyrssreader.data.NewsData;
 import com.yura.tutbyrssreader.dialogs.InfoDialog;
 import com.yura.tutbyrssreader.listeners.PopupSelectItemListener;
 import com.yura.tutbyrssreader.listeners.RecyclerItemClickListener;
+import com.yura.tutbyrssreader.settings.SettingsActivity;
 import com.yura.tutbyrssreader.web_view.WebViewActivity;
 
 import java.util.Collection;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private TutByAdapter recyclerViewAdapter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private Boolean datesChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
 
         MenuItem searchMenu = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchMenu.getActionView();
@@ -128,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+        return true;
+    }
+
     private void loadNews() {
         model.loadData();
     }
@@ -135,7 +148,10 @@ public class MainActivity extends AppCompatActivity {
     private void setItems(Collection news) {
         recyclerViewAdapter.setItems(news);
         swipeRefreshLayout.setRefreshing(false);
-
+        if(!datesChecked){
+            model.checkDates();
+            datesChecked = true;
+        }
     }
 
     private void showInfoPopup(NewsData item) {

@@ -4,12 +4,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +40,8 @@ public class AutodiscoveryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_autodiscovery);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00070F")));
+        getSupportActionBar().setTitle(getString(R.string.autodiscovery_toolbar_text));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         searchResultTextView = findViewById(R.id.searchResultTextVIew);
 
@@ -120,5 +124,13 @@ public class AutodiscoveryActivity extends AppCompatActivity {
         setResult(RESULT_OK);
 
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
     }
 }

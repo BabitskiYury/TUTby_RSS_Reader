@@ -40,8 +40,6 @@ public class MainActivityViewModel extends AndroidViewModel {
         if (NetworkManager.isNetworkAvailable(application)) {
             Background background = new Background();
             background.execute(() -> {
-                Application application = getApplication();
-
                 SharedPreferences sPref = application.getSharedPreferences("Settings", Context.MODE_PRIVATE);
 
                 String baseUrl = sPref.getString(application.getString(R.string.sprefs_base_url_string), "https://news.tut.by/");
@@ -52,6 +50,13 @@ public class MainActivityViewModel extends AndroidViewModel {
         } else
             viewCommands.setValue(new ViewCommand.ShowText("No internet connection."));
 
+    }
+
+    public void checkDates(){
+        SharedPreferences sPref = application.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+
+        int days = sPref.getInt(application.getString(R.string.sprefs_days_to_delete_string), 7);
+        repository.checkDates(days);
     }
 
     public void setItemState(NewsData item, NewsState state) {

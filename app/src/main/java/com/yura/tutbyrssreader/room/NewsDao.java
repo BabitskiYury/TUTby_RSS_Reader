@@ -2,6 +2,7 @@ package com.yura.tutbyrssreader.room;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -22,6 +23,9 @@ public interface NewsDao {
 
     @Query("DELETE FROM news_table")
     void deleteAll();
+
+    @Delete
+    void delete(NewsData newsData);
 
     @Query("SELECT * FROM news_table")
     List<NewsData> getNews();

@@ -4,9 +4,13 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.yura.tutbyrssreader.NewsState;
 import com.yura.tutbyrssreader.api.ApiController;
 import com.yura.tutbyrssreader.data.NewsData;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class NewsRepository {
@@ -55,5 +59,31 @@ public class NewsRepository {
         NewsRoomDatabase.databaseWriteExecutor.execute(() -> newsDao.update(item));
     }
 
+    public void checkDates(int daysCount) {
+        NewsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<NewsData> items = allNews.getValue();
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+            int days;
+            long milliseconds;
+            for (NewsData item: items) {
+                try {
+                    if(item.state == NewsState.DONE){
+                        Date date1 = dateFormat.parse(item.getPubDate());
+                        Date date2 = dateFormat.parse(dateFormat.format(new Date()));
+
+                        milliseconds = date2.getTime() - date1.getTime();
+
+                        days = (int) (milliseconds / (24 * 60 * 60 * 1000));
+
+                        if(days>daysCount)
+                            newsDao.delete(item);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }

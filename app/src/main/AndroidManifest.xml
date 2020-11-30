@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TUTbyRSSReader"
         android:usesCleartextTraffic="true">
-        <activity android:name=".autodiscovery.AutodiscoveryActivity"></activity>
+        <activity android:name=".settings.SettingsActivity"></activity>
+        <activity android:name=".autodiscovery.AutodiscoveryActivity" />
         <activity android:name=".web_view.WebViewActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

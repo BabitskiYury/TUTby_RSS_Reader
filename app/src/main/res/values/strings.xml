@@ -8,7 +8,15 @@
     <string name="search_results_text">Результат поиска:</string>
     <string name="choose_url_text">Выбрать</string>
     <string name="search_failed_text">Ничего не найдено.</string>
+    <string name="settings_toolbar_text">Settings</string>
+    <string name="autodiscovery_toolbar_text">URL reconfiguring</string>
     <string name="sprefs_link_string">sprefs_link_string</string>
     <string name="sprefs_base_url_string">sprefs_base_url_string</string>
+    <string name="sprefs_days_to_delete_string">sprefs_days_to_delete_string</string>
+    <string name="sprefs_days_to_delete_btn_string">sprefs_days_to_delete_btn_string</string>
     <string name="accept_button_text">Сохранить</string>
+    <string name="days_to_delete_text">Время, после которого прочитанные новости удалятся:</string>
+    <string name="week_text">Неделя</string>
+    <string name="month_text">Месяц</string>
+    <string name="three_month_text">3 месяца</string>
 </resources>
